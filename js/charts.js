@@ -3,7 +3,11 @@
 // DASHBOARD REFORMA ENTRE-SAFRA - FROTA CCT JAYORO
 // ======================================================
 
-// Guarda gráficos ativos
+
+// ======================================================
+// GUARDA GRÁFICOS ATIVOS
+// ======================================================
+
 let graficos = {};
 
 
@@ -11,35 +15,30 @@ let graficos = {};
 // ATUALIZAR TODOS OS GRÁFICOS
 // ======================================================
 
-function atualizarGraficos(dados){
+function atualizarGraficos(dados) {
 
     destruirGraficos();
 
-
     criarGraficoSistemas(dados);
-
 
     criarGraficoCriticos(dados);
 
-
     criarGraficoMatriz(dados);
-
 
     criarGraficoEvolucao(dados);
 
 }
 
 
-
 // ======================================================
 // DESTRUIR GRÁFICOS
 // ======================================================
 
-function destruirGraficos(){
+function destruirGraficos() {
 
     Object.values(graficos).forEach(grafico => {
 
-        if(grafico){
+        if (grafico) {
 
             grafico.destroy();
 
@@ -47,18 +46,16 @@ function destruirGraficos(){
 
     });
 
-
     graficos = {};
 
 }
-
 
 
 // ======================================================
 // 1 - SISTEMAS MAIS EXECUTADOS
 // ======================================================
 
-function criarGraficoSistemas(dados){
+function criarGraficoSistemas(dados) {
 
     const agrupado = agruparPor(
         dados,
@@ -86,7 +83,7 @@ function criarGraficoSistemas(dados){
     );
 
 
-    if(!elemento){
+    if (!elemento) {
 
         console.warn(
             "Elemento graficoSistemas não encontrado."
@@ -105,16 +102,13 @@ function criarGraficoSistemas(dados){
 
             type: "bar",
 
-
             data: {
 
                 labels: labels,
 
-
                 datasets: [{
 
                     label: "Execuções",
-
 
                     data: valores
 
@@ -122,13 +116,11 @@ function criarGraficoSistemas(dados){
 
             },
 
-
             options: {
 
                 responsive: true,
 
                 maintainAspectRatio: false,
-
 
                 plugins: {
 
@@ -149,12 +141,11 @@ function criarGraficoSistemas(dados){
 }
 
 
-
 // ======================================================
 // 2 - EQUIPAMENTOS COM MAIOR DEMANDA
 // ======================================================
 
-function criarGraficoCriticos(dados){
+function criarGraficoCriticos(dados) {
 
     const agrupado = agruparPor(
         dados,
@@ -166,11 +157,11 @@ function criarGraficoCriticos(dados){
         agrupado
     )
 
-    .sort(
-        (a, b) => b[1] - a[1]
-    )
+        .sort(
+            (a, b) => b[1] - a[1]
+        )
 
-    .slice(0, 10);
+        .slice(0, 10);
 
 
     const elemento = document.getElementById(
@@ -178,7 +169,7 @@ function criarGraficoCriticos(dados){
     );
 
 
-    if(!elemento){
+    if (!elemento) {
 
         console.warn(
             "Elemento graficoCriticos não encontrado."
@@ -197,18 +188,15 @@ function criarGraficoCriticos(dados){
 
             type: "bar",
 
-
             data: {
 
                 labels: lista.map(
                     item => item[0]
                 ),
 
-
                 datasets: [{
 
                     label: "Nº de Apontamentos",
-
 
                     data: lista.map(
                         item => item[1]
@@ -217,7 +205,6 @@ function criarGraficoCriticos(dados){
                 }]
 
             },
-
 
             options: {
 
@@ -234,15 +221,13 @@ function criarGraficoCriticos(dados){
 }
 
 
-
 // ======================================================
 // 3 - MATRIZ EQUIPAMENTO x SISTEMA
 // ======================================================
 
-function criarGraficoMatriz(dados){
+function criarGraficoMatriz(dados) {
 
     const matriz = {};
-
 
 
     dados.forEach(item => {
@@ -257,7 +242,7 @@ function criarGraficoMatriz(dados){
             "Não informado";
 
 
-        if(!matriz[equipamento]){
+        if (!matriz[equipamento]) {
 
             matriz[equipamento] = {};
 
@@ -269,11 +254,9 @@ function criarGraficoMatriz(dados){
     });
 
 
-
     const equipamentos = Object.keys(
         matriz
     );
-
 
 
     const sistemas = [
@@ -293,10 +276,11 @@ function criarGraficoMatriz(dados){
     ];
 
 
-
     // ==================================================
     // CORES FIXAS DOS SISTEMAS
-    // Cada sistema possui UMA cor exclusiva
+    //
+    // Variações do mesmo sistema
+    // utilizam a mesma cor.
     // ==================================================
 
     const coresSistemas = {
@@ -356,7 +340,6 @@ function criarGraficoMatriz(dados){
     };
 
 
-
     // ==================================================
     // CORES DE RESERVA
     // ==================================================
@@ -364,27 +347,17 @@ function criarGraficoMatriz(dados){
     const coresPadrao = [
 
         "#16A085",
-
         "#C0392B",
-
         "#8E44AD",
-
         "#2C3E50",
-
         "#D35400",
-
         "#7F8C8D",
-
         "#2980B9",
-
         "#27AE60",
-
         "#F39C12",
-
         "#1ABC9C"
 
     ];
-
 
 
     const elemento = document.getElementById(
@@ -392,7 +365,7 @@ function criarGraficoMatriz(dados){
     );
 
 
-    if(!elemento){
+    if (!elemento) {
 
         console.warn(
             "Elemento graficoMatriz não encontrado."
@@ -403,7 +376,6 @@ function criarGraficoMatriz(dados){
     }
 
 
-
     graficos.matriz = new Chart(
 
         elemento,
@@ -412,11 +384,9 @@ function criarGraficoMatriz(dados){
 
             type: "bar",
 
-
             data: {
 
                 labels: equipamentos,
-
 
                 datasets:
 
@@ -436,7 +406,6 @@ function criarGraficoMatriz(dados){
 
                                 label: sistema,
 
-
                                 data:
 
                                     equipamentos.map(
@@ -449,12 +418,11 @@ function criarGraficoMatriz(dados){
 
                                     ),
 
+                                backgroundColor:
+                                    cor,
 
-                                backgroundColor: cor,
-
-
-                                borderColor: cor,
-
+                                borderColor:
+                                    cor,
 
                                 borderWidth: 1
 
@@ -466,13 +434,11 @@ function criarGraficoMatriz(dados){
 
             },
 
-
             options: {
 
                 responsive: true,
 
                 maintainAspectRatio: false,
-
 
                 plugins: {
 
@@ -484,7 +450,6 @@ function criarGraficoMatriz(dados){
 
                 },
 
-
                 scales: {
 
                     x: {
@@ -493,13 +458,11 @@ function criarGraficoMatriz(dados){
 
                     },
 
-
                     y: {
 
                         stacked: true,
 
                         beginAtZero: true,
-
 
                         ticks: {
 
@@ -520,7 +483,6 @@ function criarGraficoMatriz(dados){
 }
 
 
-
 // ======================================================
 // 4 - APONTAMENTOS POR EQUIPAMENTO
 // ======================================================
@@ -539,7 +501,8 @@ function criarGraficoMatriz(dados){
 //
 // ======================================================
 
-function criarGraficoEvolucao(dados){
+function criarGraficoEvolucao(dados) {
+
 
     // ==================================================
     // AGRUPAR APONTAMENTOS POR EQUIPAMENTO
@@ -557,7 +520,7 @@ function criarGraficoEvolucao(dados){
             ).trim();
 
 
-        if(!apontamentosPorEquipamento[equipamento]){
+        if (!apontamentosPorEquipamento[equipamento]) {
 
             apontamentosPorEquipamento[equipamento] = 0;
 
@@ -567,7 +530,6 @@ function criarGraficoEvolucao(dados){
         apontamentosPorEquipamento[equipamento]++;
 
     });
-
 
 
     // ==================================================
@@ -592,7 +554,6 @@ function criarGraficoEvolucao(dados){
     );
 
 
-
     // ==================================================
     // LABELS DO EIXO X
     // ==================================================
@@ -602,7 +563,6 @@ function criarGraficoEvolucao(dados){
     );
 
 
-
     // ==================================================
     // VALORES
     // ==================================================
@@ -610,7 +570,6 @@ function criarGraficoEvolucao(dados){
     const valores = entradas.map(
         item => item[1]
     );
-
 
 
     // ==================================================
@@ -632,12 +591,8 @@ function criarGraficoEvolucao(dados){
         : 0;
 
 
-
     // ==================================================
     // LINHA DA MÉDIA
-    //
-    // Repete o valor da média para atravessar
-    // todo o gráfico.
     // ==================================================
 
     const linhaMedia = valores.map(
@@ -649,7 +604,6 @@ function criarGraficoEvolucao(dados){
     );
 
 
-
     // ==================================================
     // LOCALIZAR CANVAS
     // ==================================================
@@ -659,7 +613,7 @@ function criarGraficoEvolucao(dados){
     );
 
 
-    if(!elemento){
+    if (!elemento) {
 
         console.warn(
             "Elemento graficoEvolucao não encontrado."
@@ -668,7 +622,6 @@ function criarGraficoEvolucao(dados){
         return;
 
     }
-
 
 
     // ==================================================
@@ -683,11 +636,9 @@ function criarGraficoEvolucao(dados){
 
             type: "line",
 
-
             data: {
 
                 labels: labels,
-
 
                 datasets: [
 
@@ -700,43 +651,38 @@ function criarGraficoEvolucao(dados){
                         label:
                             "Apontamentos por Equipamento",
 
-
                         data:
                             valores,
-
 
                         borderColor:
                             "#49B96D",
 
-
                         backgroundColor:
                             "rgba(73, 185, 109, 0.15)",
 
-
-                        borderWidth: 3,
-
+                        borderWidth:
+                            3,
 
                         pointBackgroundColor:
                             "#49B96D",
 
-
                         pointBorderColor:
                             "#FFFFFF",
 
+                        pointBorderWidth:
+                            2,
 
-                        pointBorderWidth: 2,
+                        pointRadius:
+                            5,
 
+                        pointHoverRadius:
+                            8,
 
-                        pointRadius: 5,
+                        fill:
+                            true,
 
-
-                        pointHoverRadius: 8,
-
-
-                        fill: true,
-
-
-                        tension: 0.35
+                        tension:
+                            0.35
 
                     },
 
@@ -750,36 +696,32 @@ function criarGraficoEvolucao(dados){
                         label:
                             `Média: ${media.toFixed(1)}`,
 
-
                         data:
                             linhaMedia,
-
 
                         borderColor:
                             "#E74C3C",
 
-
                         backgroundColor:
                             "transparent",
 
-
-                        borderWidth: 3,
-
+                        borderWidth:
+                            3,
 
                         borderDash:
                             [8, 6],
 
+                        pointRadius:
+                            0,
 
-                        pointRadius: 0,
+                        pointHoverRadius:
+                            0,
 
+                        fill:
+                            false,
 
-                        pointHoverRadius: 0,
-
-
-                        fill: false,
-
-
-                        tension: 0
+                        tension:
+                            0
 
                     }
 
@@ -790,17 +732,20 @@ function criarGraficoEvolucao(dados){
 
             options: {
 
-                responsive: true,
+                responsive:
+                    true,
 
-
-                maintainAspectRatio: false,
+                maintainAspectRatio:
+                    false,
 
 
                 interaction: {
 
-                    mode: "index",
+                    mode:
+                        "index",
 
-                    intersect: false
+                    intersect:
+                        false
 
                 },
 
@@ -813,38 +758,41 @@ function criarGraficoEvolucao(dados){
 
                     legend: {
 
-                        display: true,
+                        display:
+                            true,
 
+                        position:
+                            "top",
 
-                        position: "top",
-
-
-                        align: "center",
-
+                        align:
+                            "center",
 
                         labels: {
 
-                            color: "#FFFFFF",
-
+                            color:
+                                "#FFFFFF",
 
                             font: {
 
-                                family: "Poppins",
+                                family:
+                                    "Poppins",
 
-                                size: 12,
+                                size:
+                                    12,
 
-                                weight: "500"
+                                weight:
+                                    "500"
 
                             },
 
+                            usePointStyle:
+                                true,
 
-                            usePointStyle: true,
+                            pointStyle:
+                                "line",
 
-
-                            pointStyle: "line",
-
-
-                            padding: 20
+                            padding:
+                                20
 
                         }
 
@@ -860,67 +808,70 @@ function criarGraficoEvolucao(dados){
                         backgroundColor:
                             "#172117",
 
-
                         titleColor:
                             "#FFFFFF",
-
 
                         bodyColor:
                             "#FFFFFF",
 
-
                         borderColor:
                             "#49B96D",
 
+                        borderWidth:
+                            1,
 
-                        borderWidth: 1,
-
-
-                        padding: 12,
+                        padding:
+                            12,
 
 
                         titleFont: {
 
-                            family: "Poppins",
+                            family:
+                                "Poppins",
 
-                            size: 13,
+                            size:
+                                13,
 
-                            weight: "600"
+                            weight:
+                                "600"
 
                         },
 
 
                         bodyFont: {
 
-                            family: "Poppins",
+                            family:
+                                "Poppins",
 
-                            size: 12
+                            size:
+                                12
 
                         },
 
 
                         callbacks: {
 
-                            label: function(context){
+                            label:
+                                function(context) {
 
-                                if(
-                                    context.datasetIndex === 0
-                                ){
+                                    if (
+                                        context.datasetIndex === 0
+                                    ) {
+
+                                        return (
+                                            "Apontamentos: " +
+                                            context.raw
+                                        );
+
+                                    }
+
 
                                     return (
-                                        "Apontamentos: " +
-                                        context.raw
+                                        "Média: " +
+                                        media.toFixed(1)
                                     );
 
                                 }
-
-
-                                return (
-                                    "Média: " +
-                                    media.toFixed(1)
-                                );
-
-                            }
 
                         }
 
@@ -942,7 +893,6 @@ function criarGraficoEvolucao(dados){
                             color:
                                 "#D8E0D8",
 
-
                             font: {
 
                                 family:
@@ -956,11 +906,11 @@ function criarGraficoEvolucao(dados){
 
                             },
 
+                            maxRotation:
+                                45,
 
-                            maxRotation: 45,
-
-
-                            minRotation: 35
+                            minRotation:
+                                35
 
                         },
 
@@ -969,7 +919,6 @@ function criarGraficoEvolucao(dados){
 
                             color:
                                 "rgba(255,255,255,0.04)",
-
 
                             drawBorder:
                                 false
@@ -985,14 +934,14 @@ function criarGraficoEvolucao(dados){
 
                     y: {
 
-                        beginAtZero: true,
+                        beginAtZero:
+                            true,
 
 
                         ticks: {
 
                             color:
                                 "#D8E0D8",
-
 
                             font: {
 
@@ -1007,11 +956,11 @@ function criarGraficoEvolucao(dados){
 
                             },
 
+                            precision:
+                                0,
 
-                            precision: 0,
-
-
-                            padding: 8
+                            padding:
+                                8
 
                         },
 
@@ -1021,7 +970,6 @@ function criarGraficoEvolucao(dados){
                             color:
                                 "rgba(255,255,255,0.08)",
 
-
                             drawBorder:
                                 false
 
@@ -1030,16 +978,14 @@ function criarGraficoEvolucao(dados){
 
                         title: {
 
-                            display: true,
-
+                            display:
+                                true,
 
                             text:
                                 "Quantidade de apontamentos",
 
-
                             color:
                                 "#A7B0A7",
-
 
                             font: {
 
@@ -1067,7 +1013,6 @@ function criarGraficoEvolucao(dados){
     );
 
 }
-
 
 
 // ======================================================
