@@ -277,35 +277,55 @@ function criarGraficoMatriz(dados){
     ];
 
 
-
     // ==================================================
     // CORES FIXAS DOS SISTEMAS
     // Cada sistema possui UMA cor exclusiva
     // ==================================================
 
-    const coresSistemas = {
+        const coresSistemas = {
 
-        "RODANTE(PNEUS)": "#F1C40F",   // Amarelo
-        "RODANTE (PNEUS)": "#F1C40F",  // Amarelo
-        "ESTRUTURA": "#2ECC71",        // Verde Claro
-        "CHASSI": "#E67E22",           // Laranja
-        "EIXO TRASEIRO": "#34495E",    // Azul Grafite / Escuro
-        "FREIO": "#E74C3C",            // Vermelho
-        "FREIOS": "#E74C3C",           // Vermelho
-        "PNEUMATICO": "#3498DB",       // Azul Claro
-        "PNEUMÁTICO": "#3498DB",       // Azul Claro
-        "EIXO DIANTEIRO": "#1ABC9C",   // Verde Água / Turquesa
-        "ENGATE": "#9B59B6",           // Roxo
-        "ELÉTRICO": "#16A085",         // Verde Azulado Escuro (Teal)
-        "ELÉTRICA": "#16A085",         // Verde Azulado Escuro (Teal)
-        "PQS & MATERIAIS": "#F39C12",  // Amarelo Ouro / Âmbar
-        "SUSPENSAO": "#D35400",        // Laranja Escuro / Ferrugem
-        "SUSPENSÃO": "#D35400",        // Laranja Escuro / Ferrugem
-        "IMPLEMENTO": "#E84393"        // Rosa Choque / Magenta
+            // 🟡 RODANTE
+            "RODANTE(PNEUS)": "#F1C40F",
+            "RODANTE (PNEUS)": "#F1C40F",
 
-    };
+            // 🟢 ESTRUTURA
+            "ESTRUTURA": "#2ECC71",
 
+            // 🟠 CHASSI
+            "CHASSI": "#E67E22",
 
+            // ⚫ EIXO TRASEIRO
+            "EIXO TRASEIRO": "#34495E",
+
+            // 🔴 FREIO
+            "FREIO": "#E74C3C",
+            "FREIOS": "#E74C3C",
+
+            // 🔵 PNEUMÁTICO
+            "PNEUMATICO": "#3498DB",
+            "PNEUMÁTICO": "#3498DB",
+
+            // 🟦 EIXO DIANTEIRO
+            "EIXO DIANTEIRO": "#1ABC9C",
+
+            // 🟣 ENGATE
+            "ENGATE": "#9B59B6",
+
+            // 🟩 ELÉTRICA
+            "ELÉTRICO": "#16A085",
+            "ELÉTRICA": "#16A085",
+
+            // 🟨 PÇS & MATERIAIS
+            "PÇS & MATERIAIS": "#F39C12",
+
+            // 🟤 SUSPENSÃO
+            "SUSPENSAO": "#D35400",
+            "SUSPENSÃO": "#D35400",
+
+            // 🌸 IMPLEMENTO
+            "IMPLEMENTO": "#E84393"
+
+        };
 
     // ==================================================
     // CORES DE RESERVA
