@@ -4,78 +4,51 @@
 // ======================================================
 
 
-
-// Dados atuais
+// ======================================================
+// DADOS ATUAIS
+// ======================================================
 
 let dadosDashboard = [];
 
 let resumoDashboard = {};
 
 
-
-
-
 // ======================================================
 // RECEBER DADOS DO EXCEL
 // ======================================================
 
-
 function atualizarDashboard(
     dados,
     resumo
-){
-
-
+) {
 
     dadosDashboard = dados;
-
 
     resumoDashboard = resumo;
 
 
-
-
-
     console.log(
-
         "Dashboard atualizado:",
-
         resumoDashboard
-
     );
-
-
-
-
 
 
     atualizarKPIs();
 
 
+    // ==================================================
+    // ATUALIZA GRÁFICOS
+    // ==================================================
 
-
-
-
-    // Atualiza gráficos
-
-    if(
-
+    if (
         typeof atualizarGraficos === "function"
-
-    ){
-
-
+    ) {
 
         atualizarGraficos(
-
             dadosDashboard
-
         );
 
-
     }
-
-
 
 }
 
@@ -84,20 +57,18 @@ function atualizarDashboard(
 // ATUALIZAR CARDS KPI
 // ======================================================
 
-
-function atualizarKPIs(){
+function atualizarKPIs() {
 
 
     // =============================
     // EQUIPAMENTOS
     // =============================
 
-
     atualizarTexto(
-    "kpiVagoes",
-    resumoDashboard
-        .equipamentos
-        ?.length || 0
+        "kpiVagoes",
+        resumoDashboard
+            .equipamentos
+            ?.length || 0
     );
 
 
@@ -105,18 +76,11 @@ function atualizarKPIs(){
     // SISTEMAS
     // =============================
 
-
     atualizarTexto(
-
         "kpiSistemas",
-
         resumoDashboard
-
             .sistemas
-
             ?.length || 0
-
-
     );
 
 
@@ -124,272 +88,171 @@ function atualizarKPIs(){
     // ORDENS DE SERVIÇO
     // =============================
 
-
     atualizarTexto(
-
         "kpiOS",
-
         resumoDashboard
-
             .ordensServico || 0
-
-
     );
 
 
-
-
-
-
-
     // =============================
-    // PRAZO
+    // PERÍODO DOS DADOS
     // =============================
 
-
-    const dias =
-
-
-        calcularDiasRestantes(
-
-            "2026-08-12"
-
-        );
-
-
-
-
-
-    atualizarTexto(
-
-        "kpiPrazo",
-
-        dias
-
-
-    );
-
-
-
-
+    atualizarPrazo();
 
 }
-
-
-
-
-
-
-
 
 
 // ======================================================
 // LISTAS AUXILIARES
 // ======================================================
 
-
-
-function obterEquipamentos(){
-
+function obterEquipamentos() {
 
     return agruparPor(
-
         dadosDashboard,
-
         "equipamento"
-
     );
-
 
 }
 
 
-
-
-
-
-
-
-function obterSistemas(){
-
+function obterSistemas() {
 
     return agruparPor(
-
         dadosDashboard,
-
         "sistema"
-
     );
-
 
 }
 
 
-
-
-
-
-
-
-function obterComponentes(){
-
+function obterComponentes() {
 
     return agruparPor(
-
         dadosDashboard,
-
         "componente"
-
     );
-
 
 }
 
 
-
-
-
-
-
-
-function obterTarefas(){
-
+function obterTarefas() {
 
     return agruparPor(
-
         dadosDashboard,
-
         "tarefa"
-
     );
-
 
 }
 
 
-
-
-
-
-
-
-
 // ======================================================
-// ATUALIZAR PRAZO
+// ATUALIZAR PERÍODO DOS DADOS
 // ======================================================
 
+function atualizarPrazo() {
 
-function atualizarPrazo(){
 
+    // =============================
+    // DATA INICIAL DOS DADOS
+    // =============================
+
+    const dataInicio = new Date(
+        "2025-11-01T00:00:00"
+    );
+
+
+    // =============================
+    // DATA FINAL DOS DADOS
+    // =============================
+
+    const dataFim = new Date(
+        "2026-08-08T00:00:00"
+    );
+
+
+    // =============================
+    // DIFERENÇA ENTRE AS DATAS
+    // =============================
+
+    const diferencaMs =
+        dataFim - dataInicio;
 
 
     const dias =
+        Math.floor(
+            diferencaMs /
+            (1000 * 60 * 60 * 24)
+        ) + 1;
 
 
-        calcularDiasRestantes(
-
-            "2026-08-12"
-
-        );
-
-
-
-
+    // =============================
+    // ATUALIZAR KPI
+    // =============================
 
     atualizarTexto(
-
         "kpiPrazo",
-
         dias
-
     );
 
-
 }
-
-
-
-
-
-
-
 
 
 // ======================================================
 // INICIALIZAÇÃO
 // ======================================================
 
-
 window.addEventListener(
-
     "DOMContentLoaded",
+    () => {
 
-    ()=>{
 
+        // =============================
+        // ATUALIZA PERÍODO DOS DADOS
+        // =============================
 
         atualizarPrazo();
 
 
+        // =============================
+        // LOG DO DASHBOARD
+        // =============================
 
-        if(
-
+        if (
             typeof logDashboard === "function"
-
-        ){
-
+        ) {
 
             logDashboard(
-
                 "Dashboard iniciado"
-
             );
-
 
         }
 
-
-
     }
-
 );
 
 
-
-
-
-
-
-
-
 // ======================================================
-// EXPORTAR
+// EXPORTAR FUNÇÕES
 // ======================================================
-
 
 window.atualizarDashboard =
-
     atualizarDashboard;
 
 
-
 window.obterEquipamentos =
-
     obterEquipamentos;
 
 
-
 window.obterSistemas =
-
     obterSistemas;
 
 
-
 window.obterComponentes =
-
     obterComponentes;
 
 
-
 window.obterTarefas =
-
     obterTarefas;
