@@ -1,7 +1,17 @@
+<!-- ==================================================
+     DASHBOARD REFORMA ENTRE-SAFRA
+     FROTA CCT • PCM JAYORO
+================================================== -->
+
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 
 <head>
+
+    <!-- ==================================================
+         CONFIGURAÇÕES
+    ================================================== -->
 
     <meta charset="UTF-8">
 
@@ -72,6 +82,8 @@
 
     <!-- ==================================================
          SHEETJS / XLSX
+         
+         Importação de Excel e CSV
     ================================================== -->
 
     <script
@@ -91,7 +103,9 @@
     <header class="topbar">
 
 
-        <!-- LOGO + TÍTULO -->
+        <!-- ==================================================
+             LOGO + TÍTULO
+        ================================================== -->
 
         <div class="logo">
 
@@ -120,16 +134,22 @@
 
 
 
-        <!-- AÇÕES DO HEADER -->
+        <!-- ==================================================
+             AÇÕES DO HEADER
+        ================================================== -->
 
         <div class="header-actions">
 
 
-            <!-- IMPORTAR EXCEL -->
+            <!-- ==================================================
+                 IMPORTAR EXCEL
+            ================================================== -->
 
             <label class="btn-import">
 
+
                 <i class="fa-solid fa-file-excel"></i>
+
 
                 Importar Excel
 
@@ -141,217 +161,260 @@
                     hidden
                 >
 
+
             </label>
 
 
 
-<!-- PERÍODO DOS DADOS --> 
-    <div class="prazo"> 
-    <span> Período dos Dados </span> 
-    <h2> 01/11/2025 — 08/08/2026 </h2> 
-    <small> Formulário: CS-5839 </small> 
-    </div> 
-    </div> 
+            <!-- ==================================================
+                 PERÍODO DOS DADOS
+            ================================================== -->
+
+            <div class="prazo">
+
+
+                <span>
+                    Período dos Dados
+                </span>
+
+
+                <h2>
+                    01/11/2025 — 08/08/2026
+                </h2>
+
+
+                <small>
+                    Formulário: CS-5839
+                </small>
+
+
+            </div>
+
+
+        </div>
+
+
     </header>
 
 
 
     <!-- ==================================================
-         KPIs
+         CONTEÚDO PRINCIPAL
     ================================================== -->
 
-    <section class="kpis">
+    <main>
 
 
-        <div class="card">
+        <!-- ==================================================
+             KPIs
+        ================================================== -->
 
-            <i class="fa-solid fa-truck"></i>
+        <section class="kpis">
 
-            <h3>
-                Equipamentos
-            </h3>
 
-            <h1 id="kpiVagoes">
-                0
-            </h1>
+            <!-- ==================================================
+                 EQUIPAMENTOS
+            ================================================== -->
+
+            <div class="card">
+
+
+                <i class="fa-solid fa-truck"></i>
+
+
+                <h3>
+                    Equipamentos
+                </h3>
+
+
+                <h1 id="kpiVagoes">
+                    0
+                </h1>
+
 
             </div>
 
 
 
-        <!-- SISTEMAS -->
+            <!-- ==================================================
+                 SISTEMAS
+            ================================================== -->
 
-        <div class="card">
-
-            <i class="fa-solid fa-gears"></i>
-
-            <h3>
-                Sistemas Executado
-            </h3>
-
-            <h1 id="kpiSistemas">
-                0
-            </h1>
-
-        </div>
+            <div class="card">
 
 
-
-        <!-- ORDENS DE SERVIÇO -->
-
-        <div class="card">
-
-            <i class="fa-solid fa-file-circle-check"></i>
-
-            <h3>
-                Ordens de Serviço
-                <br>(Analisadas da Família 37)
-            </h3>
-
-            <h1 id="kpiOS">
-                0
-            </h1>
-
-        </div>
+                <i class="fa-solid fa-gears"></i>
 
 
-
-        <!-- DIAS RESTANTES -->
-
-       <div class="card">
-
-            <i class="fa-solid fa-calendar-days"></i>
-
-            <h3>
-                Período Analisado
-            </h3>
-
-            <h1 id="kpiPrazo">
-                0
-            </h1>
-
-            <span>
-                dias
-            </span>
-
-        </div>
+                <h3>
+                    Sistemas Executados
+                </h3>
 
 
-    </section>
+                <h1 id="kpiSistemas">
+                    0
+                </h1>
 
-
-
-    <!-- ==================================================
-         PRIMEIRA LINHA
-    ================================================== -->
-
-    <section class="grid-2">
-
-
-        <!-- SISTEMAS MAIS EXECUTADOS -->
-
-        <div class="panel">
-
-            <div class="panel-title">
-
-                <i class="fa-solid fa-chart-column"></i>
-
-                Sistemas mais executados
 
             </div>
 
 
-            <canvas
-                id="graficoSistemas"
-            ></canvas>
 
-        </div>
+            <!-- ==================================================
+                 ORDENS DE SERVIÇO
+            ================================================== -->
+
+            <div class="card">
 
 
+                <i class="fa-solid fa-file-circle-check"></i>
 
-        <!-- EQUIPAMENTOS COM MAIOR DEMANDA -->
 
-        <div class="panel">
+                <h3>
+                    Ordens de Serviço
+                    <br>
+                    (Analisadas da Família 37)
+                </h3>
 
-            <div class="panel-title">
 
-                <i class="fa-solid fa-triangle-exclamation"></i>
+                <h1 id="kpiOS">
+                    0
+                </h1>
 
-                Equipamentos com maior demanda de Apontamentos
 
             </div>
 
 
-            <canvas
-                id="graficoCriticos"
-            ></canvas>
 
-        </div>
+            <!-- ==================================================
+                 PERÍODO ANALISADO
+            ================================================== -->
 
-
-    </section>
+            <div class="card">
 
 
-
-    <!-- ==================================================
-         MATRIZ
-    ================================================== -->
-
-    <section class="grid-1">
+                <i class="fa-solid fa-calendar-days"></i>
 
 
-        <div class="panel">
+                <h3>
+                    Período Analisado
+                </h3>
 
 
-            <div class="panel-title">
+                <h1 id="kpiPrazo">
+                    0
+                </h1>
 
-                <i class="fa-solid fa-table-cells-large"></i>
 
-                Matriz Equipamento × Sistema
+                <span>
+                    dias
+                </span>
+
 
             </div>
 
 
-            <canvas
-                id="graficoMatriz"
-            ></canvas>
+        </section>
 
+
+
+        <!-- ==================================================
+             PRIMEIRA LINHA DE GRÁFICOS
+        ================================================== -->
+
+<!-- ==================================================
+     SISTEMAS MAIS EXECUTADOS
+================================================== -->
+
+<section class="grid-1">
+
+    <div class="panel">
+
+        <div class="panel-title">
+
+            <i class="fa-solid fa-chart-column"></i>
+
+            Sistemas mais executados
 
         </div>
 
+        <canvas
+            id="graficoSistemas"
+        ></canvas>
 
-    </section>
+    </div>
 
-
-
-    <!-- ==================================================
-         Apontamentos x Média
-    ================================================== -->
-
-    <section class="grid-1">
+</section>
 
 
-        <div class="panel">
+        <!-- ==================================================
+             MATRIZ EQUIPAMENTO × SISTEMA
+        ================================================== -->
+
+        <section class="grid-1">
 
 
-            <div class="panel-title">
+            <div class="panel">
 
-                <i class="fa-solid fa-chart-line"></i>
 
-                Apontamentos x Média
+                <div class="panel-title">
+
+
+                    <i class="fa-solid fa-table-cells-large"></i>
+
+
+                    Matriz Equipamento × Sistema
+
+
+                </div>
+
+
+                <canvas
+                    id="graficoMatriz"
+                ></canvas>
+
 
             </div>
 
 
-            <canvas
-                id="graficoEvolucao"
-            ></canvas>
+        </section>
 
 
-        </div>
+
+        <!-- ==================================================
+             APONTAMENTOS × MÉDIA
+        ================================================== -->
+
+        <section class="grid-1">
 
 
-    </section>
+            <div class="panel">
+
+
+                <div class="panel-title">
+
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+
+                    Apontamentos × Média
+
+
+                </div>
+
+
+                <canvas
+                    id="graficoEvolucao"
+                ></canvas>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
 
 
 
@@ -361,8 +424,10 @@
 
     <footer>
 
+
         Dashboard desenvolvido para acompanhamento da
         Reforma Entre-Safra • PCMA Jayoro
+
 
     </footer>
 
@@ -370,7 +435,16 @@
 
     <!-- ==================================================
          JAVASCRIPT
+         
+         ORDEM IMPORTANTE:
+         
+         1. utils.js
+         2. excel.js
+         3. charts.js
+         4. dashboard.js
+         5. app.js
     ================================================== -->
+
 
     <script
         src="js/utils.js"
