@@ -7,7 +7,6 @@
 let graficos = {};
 
 
-
 // ======================================================
 // ATUALIZAR TODOS OS GRÁFICOS
 // ======================================================
@@ -16,11 +15,15 @@ function atualizarGraficos(dados){
 
     destruirGraficos();
 
+
     criarGraficoSistemas(dados);
+
 
     criarGraficoCriticos(dados);
 
+
     criarGraficoMatriz(dados);
+
 
     criarGraficoEvolucao(dados);
 
@@ -43,6 +46,7 @@ function destruirGraficos(){
         }
 
     });
+
 
     graficos = {};
 
@@ -67,12 +71,14 @@ function criarGraficoSistemas(dados){
     );
 
 
-    const labels = Object.keys(ordenado)
-        .slice(0, 10);
+    const labels = Object.keys(
+        ordenado
+    ).slice(0, 10);
 
 
-    const valores = Object.values(ordenado)
-        .slice(0, 10);
+    const valores = Object.values(
+        ordenado
+    ).slice(0, 10);
 
 
     const elemento = document.getElementById(
@@ -99,13 +105,16 @@ function criarGraficoSistemas(dados){
 
             type: "bar",
 
+
             data: {
 
                 labels: labels,
 
+
                 datasets: [{
 
                     label: "Execuções",
+
 
                     data: valores
 
@@ -113,11 +122,13 @@ function criarGraficoSistemas(dados){
 
             },
 
+
             options: {
 
                 responsive: true,
 
                 maintainAspectRatio: false,
+
 
                 plugins: {
 
@@ -186,15 +197,18 @@ function criarGraficoCriticos(dados){
 
             type: "bar",
 
+
             data: {
 
                 labels: lista.map(
                     item => item[0]
                 ),
 
+
                 datasets: [{
 
-                    label: "Nº de O.S",
+                    label: "Nº de Apontamentos",
+
 
                     data: lista.map(
                         item => item[1]
@@ -203,6 +217,7 @@ function criarGraficoCriticos(dados){
                 }]
 
             },
+
 
             options: {
 
@@ -227,6 +242,7 @@ function criarGraficoCriticos(dados){
 function criarGraficoMatriz(dados){
 
     const matriz = {};
+
 
 
     dados.forEach(item => {
@@ -277,59 +293,72 @@ function criarGraficoMatriz(dados){
     ];
 
 
+
     // ==================================================
     // CORES FIXAS DOS SISTEMAS
     // Cada sistema possui UMA cor exclusiva
     // ==================================================
 
-        const coresSistemas = {
+    const coresSistemas = {
 
-            // 🟡 RODANTE
-            "RODANTE(PNEUS)": "#F1C40F",
-            "RODANTE (PNEUS)": "#F1C40F",
+        // RODANTE
+        "RODANTE(PNEUS)": "#F1C40F",
+        "RODANTE (PNEUS)": "#F1C40F",
 
-            // 🟢 ESTRUTURA
-            "ESTRUTURA": "#2ECC71",
 
-            // 🟠 CHASSI
-            "CHASSI": "#E67E22",
+        // ESTRUTURA
+        "ESTRUTURA": "#2ECC71",
 
-            // ⚫ EIXO TRASEIRO
-            "EIXO TRASEIRO": "#34495E",
 
-            // 🔴 FREIO
-            "FREIO": "#E74C3C",
-            "FREIOS": "#E74C3C",
+        // CHASSI
+        "CHASSI": "#E67E22",
 
-            // 🔵 PNEUMÁTICO
-            "PNEUMATICO": "#3498DB",
-            "PNEUMÁTICO": "#3498DB",
 
-            // 🟦 EIXO DIANTEIRO
-            "EIXO DIANTEIRO": "#1ABC9C",
+        // EIXO TRASEIRO
+        "EIXO TRASEIRO": "#34495E",
 
-            // 🟣 ENGATE
-            "ENGATE": "#9B59B6",
 
-            // 🟩 ELÉTRICA
-            "ELÉTRICO": "#16A085",
-            "ELÉTRICA": "#16A085",
+        // FREIO
+        "FREIO": "#E74C3C",
+        "FREIOS": "#E74C3C",
 
-            // 🟨 PÇS & MATERIAIS
-            "PÇS & MATERIAIS": "#F39C12",
 
-            // 🟤 SUSPENSÃO
-            "SUSPENSAO": "#D35400",
-            "SUSPENSÃO": "#D35400",
+        // PNEUMÁTICO
+        "PNEUMATICO": "#3498DB",
+        "PNEUMÁTICO": "#3498DB",
 
-            // 🌸 IMPLEMENTO
-            "IMPLEMENTO": "#E84393"
 
-        };
+        // EIXO DIANTEIRO
+        "EIXO DIANTEIRO": "#1ABC9C",
+
+
+        // ENGATE
+        "ENGATE": "#9B59B6",
+
+
+        // ELÉTRICA
+        "ELÉTRICO": "#16A085",
+        "ELÉTRICA": "#16A085",
+
+
+        // PÇS & MATERIAIS
+        "PÇS & MATERIAIS": "#F39C12",
+
+
+        // SUSPENSÃO
+        "SUSPENSAO": "#D35400",
+        "SUSPENSÃO": "#D35400",
+
+
+        // IMPLEMENTO
+        "IMPLEMENTO": "#E84393"
+
+    };
+
+
 
     // ==================================================
     // CORES DE RESERVA
-    // Usadas somente se aparecer um sistema novo
     // ==================================================
 
     const coresPadrao = [
@@ -383,9 +412,11 @@ function criarGraficoMatriz(dados){
 
             type: "bar",
 
+
             data: {
 
                 labels: equipamentos,
+
 
                 datasets:
 
@@ -405,6 +436,7 @@ function criarGraficoMatriz(dados){
 
                                 label: sistema,
 
+
                                 data:
 
                                     equipamentos.map(
@@ -417,9 +449,12 @@ function criarGraficoMatriz(dados){
 
                                     ),
 
+
                                 backgroundColor: cor,
 
+
                                 borderColor: cor,
+
 
                                 borderWidth: 1
 
@@ -431,11 +466,13 @@ function criarGraficoMatriz(dados){
 
             },
 
+
             options: {
 
                 responsive: true,
 
                 maintainAspectRatio: false,
+
 
                 plugins: {
 
@@ -447,6 +484,7 @@ function criarGraficoMatriz(dados){
 
                 },
 
+
                 scales: {
 
                     x: {
@@ -455,11 +493,13 @@ function criarGraficoMatriz(dados){
 
                     },
 
+
                     y: {
 
                         stacked: true,
 
                         beginAtZero: true,
+
 
                         ticks: {
 
@@ -482,81 +522,95 @@ function criarGraficoMatriz(dados){
 
 
 // ======================================================
-// 4 - EVOLUÇÃO DA REFORMA
+// 4 - APONTAMENTOS POR EQUIPAMENTO
+// ======================================================
+//
+// EIXO X:
+// Equipamentos
+//
+// EIXO Y:
+// Quantidade de apontamentos
+//
+// LINHA VERDE:
+// Quantidade real de apontamentos
+//
+// LINHA VERMELHA:
+// Média de apontamentos da frota
+//
 // ======================================================
 
-function criarGraficoEvolucao(dados) {
-
-    const datas = {};
+function criarGraficoEvolucao(dados){
 
     // ==================================================
-    // AGRUPAR APONTAMENTOS POR DATA
+    // AGRUPAR APONTAMENTOS POR EQUIPAMENTO
     // ==================================================
+
+    const apontamentosPorEquipamento = {};
+
 
     dados.forEach(item => {
 
-        const data = item.data || "Sem data";
+        const equipamento =
+            String(
+                item.equipamento ||
+                "Não informado"
+            ).trim();
 
-        datas[data] = (datas[data] || 0) + 1;
 
-    });
+        if(!apontamentosPorEquipamento[equipamento]){
+
+            apontamentosPorEquipamento[equipamento] = 0;
+
+        }
 
 
-    // ==================================================
-    // ORGANIZAR DATAS
-    // ==================================================
-
-    const entradas = Object.entries(datas);
-
-    entradas.sort((a, b) => {
-
-        const converterData = valor => {
-
-            if (!valor || valor === "Sem data") {
-                return new Date(0);
-            }
-
-            // Caso esteja no formato DD/MM/YYYY
-            if (valor.includes("/")) {
-
-                const partes = valor.split("/");
-
-                if (partes.length === 3) {
-
-                    return new Date(
-                        Number(partes[2]),
-                        Number(partes[1]) - 1,
-                        Number(partes[0])
-                    );
-
-                }
-
-            }
-
-            // Caso esteja no formato YYYY-MM-DD
-            if (valor.includes("-")) {
-
-                return new Date(valor);
-
-            }
-
-            return new Date(valor);
-
-        };
-
-        return converterData(a[0]) - converterData(b[0]);
+        apontamentosPorEquipamento[equipamento]++;
 
     });
 
+
+
+    // ==================================================
+    // ORDENAR EQUIPAMENTOS
+    //
+    // Maior quantidade de apontamentos primeiro.
+    // ==================================================
+
+    const entradas = Object.entries(
+        apontamentosPorEquipamento
+    );
+
+
+    entradas.sort(
+
+        (a, b) => {
+
+            return b[1] - a[1];
+
+        }
+
+    );
+
+
+
+    // ==================================================
+    // LABELS DO EIXO X
+    // ==================================================
 
     const labels = entradas.map(
         item => item[0]
     );
 
 
+
+    // ==================================================
+    // VALORES
+    // ==================================================
+
     const valores = entradas.map(
         item => item[1]
     );
+
 
 
     // ==================================================
@@ -564,17 +618,57 @@ function criarGraficoEvolucao(dados) {
     // ==================================================
 
     const media = valores.length
+
         ? valores.reduce(
-            (total, valor) => total + valor,
+
+            (total, valor) =>
+
+                total + valor,
+
             0
+
         ) / valores.length
+
         : 0;
 
 
-    // Criar uma linha com a média repetida
+
+    // ==================================================
+    // LINHA DA MÉDIA
+    //
+    // Repete o valor da média para atravessar
+    // todo o gráfico.
+    // ==================================================
+
     const linhaMedia = valores.map(
-        () => Number(media.toFixed(1))
+
+        () => Number(
+            media.toFixed(1)
+        )
+
     );
+
+
+
+    // ==================================================
+    // LOCALIZAR CANVAS
+    // ==================================================
+
+    const elemento = document.getElementById(
+        "graficoEvolucao"
+    );
+
+
+    if(!elemento){
+
+        console.warn(
+            "Elemento graficoEvolucao não encontrado."
+        );
+
+        return;
+
+    }
+
 
 
     // ==================================================
@@ -583,57 +677,69 @@ function criarGraficoEvolucao(dados) {
 
     graficos.evolucao = new Chart(
 
-        document.getElementById(
-            "graficoEvolucao"
-        ),
+        elemento,
 
         {
 
             type: "line",
 
+
             data: {
 
                 labels: labels,
 
+
                 datasets: [
 
                     // ==================================
-                    // EVOLUÇÃO REAL
+                    // APONTAMENTOS REAIS
                     // ==================================
 
                     {
 
                         label:
-                            "Apontamentos por data",
+                            "Apontamentos por Equipamento",
+
 
                         data:
                             valores,
 
+
                         borderColor:
                             "#49B96D",
+
 
                         backgroundColor:
                             "rgba(73, 185, 109, 0.15)",
 
+
                         borderWidth: 3,
+
 
                         pointBackgroundColor:
                             "#49B96D",
 
+
                         pointBorderColor:
                             "#FFFFFF",
 
+
                         pointBorderWidth: 2,
+
 
                         pointRadius: 5,
 
-                        pointHoverRadius: 7,
+
+                        pointHoverRadius: 8,
+
 
                         fill: true,
+
 
                         tension: 0.35
 
                     },
+
 
                     // ==================================
                     // LINHA DA MÉDIA
@@ -644,25 +750,34 @@ function criarGraficoEvolucao(dados) {
                         label:
                             `Média: ${media.toFixed(1)}`,
 
+
                         data:
                             linhaMedia,
+
 
                         borderColor:
                             "#E74C3C",
 
+
                         backgroundColor:
                             "transparent",
 
-                        borderWidth: 2,
+
+                        borderWidth: 3,
+
 
                         borderDash:
                             [8, 6],
 
+
                         pointRadius: 0,
+
 
                         pointHoverRadius: 0,
 
+
                         fill: false,
+
 
                         tension: 0
 
@@ -676,6 +791,7 @@ function criarGraficoEvolucao(dados) {
             options: {
 
                 responsive: true,
+
 
                 maintainAspectRatio: false,
 
@@ -699,13 +815,17 @@ function criarGraficoEvolucao(dados) {
 
                         display: true,
 
+
                         position: "top",
 
+
                         align: "center",
+
 
                         labels: {
 
                             color: "#FFFFFF",
+
 
                             font: {
 
@@ -717,9 +837,12 @@ function criarGraficoEvolucao(dados) {
 
                             },
 
+
                             usePointStyle: true,
 
+
                             pointStyle: "line",
+
 
                             padding: 20
 
@@ -737,18 +860,24 @@ function criarGraficoEvolucao(dados) {
                         backgroundColor:
                             "#172117",
 
+
                         titleColor:
                             "#FFFFFF",
+
 
                         bodyColor:
                             "#FFFFFF",
 
+
                         borderColor:
                             "#49B96D",
 
+
                         borderWidth: 1,
 
+
                         padding: 12,
+
 
                         titleFont: {
 
@@ -760,6 +889,7 @@ function criarGraficoEvolucao(dados) {
 
                         },
 
+
                         bodyFont: {
 
                             family: "Poppins",
@@ -768,11 +898,27 @@ function criarGraficoEvolucao(dados) {
 
                         },
 
+
                         callbacks: {
 
-                            label: function(context) {
+                            label: function(context){
 
-                                return `${context.dataset.label}: ${context.raw}`;
+                                if(
+                                    context.datasetIndex === 0
+                                ){
+
+                                    return (
+                                        "Apontamentos: " +
+                                        context.raw
+                                    );
+
+                                }
+
+
+                                return (
+                                    "Média: " +
+                                    media.toFixed(1)
+                                );
 
                             }
 
@@ -786,35 +932,47 @@ function criarGraficoEvolucao(dados) {
                 scales: {
 
                     // ==================================
-                    // EIXO X - DATAS
+                    // EIXO X - EQUIPAMENTOS
                     // ==================================
 
                     x: {
 
                         ticks: {
 
-                            color: "#D8E0D8",
+                            color:
+                                "#D8E0D8",
+
 
                             font: {
 
-                                family: "Poppins",
+                                family:
+                                    "Poppins",
 
-                                size: 10
+                                size:
+                                    10,
+
+                                weight:
+                                    "500"
 
                             },
 
+
                             maxRotation: 45,
+
 
                             minRotation: 35
 
                         },
+
 
                         grid: {
 
                             color:
                                 "rgba(255,255,255,0.04)",
 
-                            drawBorder: false
+
+                            drawBorder:
+                                false
 
                         }
 
@@ -822,59 +980,77 @@ function criarGraficoEvolucao(dados) {
 
 
                     // ==================================
-                    // EIXO Y - QUANTIDADE
+                    // EIXO Y - APONTAMENTOS
                     // ==================================
 
                     y: {
 
                         beginAtZero: true,
 
+
                         ticks: {
 
-                            color: "#D8E0D8",
+                            color:
+                                "#D8E0D8",
+
 
                             font: {
 
-                                family: "Poppins",
+                                family:
+                                    "Poppins",
 
-                                size: 11,
+                                size:
+                                    11,
 
-                                weight: "500"
+                                weight:
+                                    "500"
 
                             },
 
+
                             precision: 0,
+
 
                             padding: 8
 
                         },
+
 
                         grid: {
 
                             color:
                                 "rgba(255,255,255,0.08)",
 
-                            drawBorder: false
+
+                            drawBorder:
+                                false
 
                         },
+
 
                         title: {
 
                             display: true,
 
+
                             text:
                                 "Quantidade de apontamentos",
+
 
                             color:
                                 "#A7B0A7",
 
+
                             font: {
 
-                                family: "Poppins",
+                                family:
+                                    "Poppins",
 
-                                size: 11,
+                                size:
+                                    11,
 
-                                weight: "500"
+                                weight:
+                                    "500"
 
                             }
 
@@ -889,253 +1065,6 @@ function criarGraficoEvolucao(dados) {
         }
 
     );
-
-}
-
-
-
-// ======================================================
-// NORMALIZAR DATA
-// ======================================================
-//
-// Aceita:
-//
-// 28/04/2026
-// 2026-04-28
-// Date
-// Número serial do Excel
-//
-// ======================================================
-
-function normalizarDataGrafico(valor){
-
-    // -----------------------------------------------
-    // Se for objeto Date
-    // -----------------------------------------------
-
-    if(valor instanceof Date){
-
-        if(isNaN(valor.getTime())){
-
-            return null;
-
-        }
-
-
-        return formatarDataBR(valor);
-
-    }
-
-
-
-    // -----------------------------------------------
-    // Se for número
-    // Possível data serial do Excel
-    // -----------------------------------------------
-
-    if(typeof valor === "number"){
-
-        const data = new Date(
-
-            Math.round(
-
-                (valor - 25569) *
-
-                86400 *
-
-                1000
-
-            )
-
-        );
-
-
-        if(isNaN(data.getTime())){
-
-            return null;
-
-        }
-
-
-        return formatarDataBR(data);
-
-    }
-
-
-
-    // -----------------------------------------------
-    // Converter para texto
-    // -----------------------------------------------
-
-    const texto = String(valor).trim();
-
-
-    if(!texto){
-
-        return null;
-
-    }
-
-
-
-    // -----------------------------------------------
-    // Formato DD/MM/YYYY
-    // -----------------------------------------------
-
-    const formatoBR =
-
-        texto.match(
-
-            /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/
-
-        );
-
-
-    if(formatoBR){
-
-        const dia =
-            formatoBR[1].padStart(2, "0");
-
-        const mes =
-            formatoBR[2].padStart(2, "0");
-
-        const ano =
-            formatoBR[3];
-
-
-        return `${dia}/${mes}/${ano}`;
-
-    }
-
-
-
-    // -----------------------------------------------
-    // Formato YYYY-MM-DD
-    // -----------------------------------------------
-
-    const formatoISO =
-
-        texto.match(
-
-            /^(\d{4})-(\d{1,2})-(\d{1,2})/
-
-        );
-
-
-    if(formatoISO){
-
-        const ano =
-            formatoISO[1];
-
-        const mes =
-            formatoISO[2].padStart(2, "0");
-
-        const dia =
-            formatoISO[3].padStart(2, "0");
-
-
-        return `${dia}/${mes}/${ano}`;
-
-    }
-
-
-
-    // -----------------------------------------------
-    // Tentar conversão automática
-    // -----------------------------------------------
-
-    const data = new Date(texto);
-
-
-    if(!isNaN(data.getTime())){
-
-        return formatarDataBR(data);
-
-    }
-
-
-
-    return null;
-
-}
-
-
-
-// ======================================================
-// FORMATAR DATA BR
-// ======================================================
-
-function formatarDataBR(data){
-
-    const dia =
-        String(
-            data.getDate()
-        ).padStart(2, "0");
-
-
-    const mes =
-        String(
-            data.getMonth() + 1
-        ).padStart(2, "0");
-
-
-    const ano =
-        data.getFullYear();
-
-
-    return `${dia}/${mes}/${ano}`;
-
-}
-
-
-
-// ======================================================
-// CONVERTER DATA BR PARA TIMESTAMP
-// ======================================================
-
-function converterDataParaTimestamp(data){
-
-    const partes =
-        data.split("/");
-
-
-    if(partes.length !== 3){
-
-        return 0;
-
-    }
-
-
-    const dia =
-        parseInt(
-            partes[0],
-            10
-        );
-
-
-    const mes =
-        parseInt(
-            partes[1],
-            10
-        ) - 1;
-
-
-    const ano =
-        parseInt(
-            partes[2],
-            10
-        );
-
-
-    return new Date(
-
-        ano,
-
-        mes,
-
-        dia
-
-    ).getTime();
 
 }
 
