@@ -1,258 +1,52 @@
-// ======================================================
-// DASHBOARD.JS
-// DASHBOARD REFORMA ENTRE-SAFRA - FROTA CCT JAYORO
-// ======================================================
-
-
-// ======================================================
-// DADOS ATUAIS
-// ======================================================
-
+// Atualiza a interface a partir do resumo centralizado.
 let dadosDashboard = [];
+let resumoDashboard = gerarResumoDados([]);
 
-let resumoDashboard = {};
-
-
-// ======================================================
-// RECEBER DADOS DO EXCEL
-// ======================================================
-
-function atualizarDashboard(
-    dados,
-    resumo
-) {
-
-    dadosDashboard = dados;
-
-    resumoDashboard = resumo;
-
-
-    console.log(
-        "Dashboard atualizado:",
-        resumoDashboard
-    );
-
-
+function atualizarDashboard(dados, resumo, metadados = {}) {
+    dadosDashboard = Array.isArray(dados) ? dados : [];
+    resumoDashboard = resumo || gerarResumoDados(dadosDashboard);
     atualizarKPIs();
-
-
-    // ==================================================
-    // ATUALIZA GRÁFICOS
-    // ==================================================
-
-    if (
-        typeof atualizarGraficos === "function"
-    ) {
-
-        atualizarGraficos(
-            dadosDashboard
-        );
-
-    }
-
+    atualizarIndicadorDados(metadados);
+    atualizarGraficos(resumoDashboard);
+    atualizarAnalises();
+    const integridade = validarIntegridadeDados(dadosDashboard, resumoDashboard);
+    if (!integridade.valido) console.error("Inconsistência de dados detectada:", integridade.erros);
 }
-
-
-// ======================================================
-// ATUALIZAR CARDS KPI
-// ======================================================
 
 function atualizarKPIs() {
-
-
-    // =============================
-    // EQUIPAMENTOS
-    // =============================
-
-    atualizarTexto(
-        "kpiVagoes",
-        resumoDashboard
-            .equipamentos
-            ?.length || 0
-    );
-
-
-    // =============================
-    // SISTEMAS
-    // =============================
-
-    atualizarTexto(
-        "kpiSistemas",
-        resumoDashboard
-            .sistemas
-            ?.length || 0
-    );
-
-
-    // =============================
-    // ORDENS DE SERVIÇO
-    // =============================
-
-    atualizarTexto(
-        "kpiOS",
-        resumoDashboard
-            .ordensServico || 0
-    );
-
-
-    // =============================
-    // PERÍODO DOS DADOS
-    // =============================
-
+    atualizarTexto("kpiVagoes", resumoDashboard.equipamentos.length);
+    atualizarTexto("kpiSistemas", `${resumoDashboard.sistemas.length}/${SISTEMAS_OBRIGATORIOS.length}`);
+    atualizarTexto("kpiCriticos", resumoDashboard.criticos);
+    atualizarTexto("kpiSemApontamento", resumoDashboard.semApontamento);
     atualizarPrazo();
-
 }
-
-
-// ======================================================
-// LISTAS AUXILIARES
-// ======================================================
-
-function obterEquipamentos() {
-
-    return agruparPor(
-        dadosDashboard,
-        "equipamento"
-    );
-
-}
-
-
-function obterSistemas() {
-
-    return agruparPor(
-        dadosDashboard,
-        "sistema"
-    );
-
-}
-
-
-function obterComponentes() {
-
-    return agruparPor(
-        dadosDashboard,
-        "componente"
-    );
-
-}
-
-
-function obterTarefas() {
-
-    return agruparPor(
-        dadosDashboard,
-        "tarefa"
-    );
-
-}
-
-
-// ======================================================
-// ATUALIZAR PERÍODO DOS DADOS
-// ======================================================
 
 function atualizarPrazo() {
-
-
-    // =============================
-    // DATA INICIAL DOS DADOS
-    // =============================
-
-    const dataInicio = new Date(
-        "2025-11-01T00:00:00"
-    );
-
-
-    // =============================
-    // DATA FINAL DOS DADOS
-    // =============================
-
-    const dataFim = new Date(
-        "2026-08-08T00:00:00"
-    );
-
-
-    // =============================
-    // DIFERENÇA ENTRE AS DATAS
-    // =============================
-
-    const diferencaMs =
-        dataFim - dataInicio;
-
-
-    const dias =
-        Math.floor(
-            diferencaMs /
-            (1000 * 60 * 60 * 24)
-        ) + 1;
-
-
-    // =============================
-    // ATUALIZAR KPI
-    // =============================
-
-    atualizarTexto(
-        "kpiPrazo",
-        dias
-    );
-
+    const dias = 283;
+    atualizarTexto("kpiPrazo", dias);
+    const elemento = document.getElementById("periodoDados");
+    if (elemento) elemento.textContent = PERIODO_PROJETO;
 }
 
+function atualizarAnalises() {
+    const analises = gerarAnalises(resumoDashboard);
+    atualizarTexto("analiseSistemas", analises.sistemas);
+    atualizarTexto("analiseMatriz", analises.matriz);
+    atualizarTexto("analisePercentual", analises.percentual);
+}
 
-// ======================================================
-// INICIALIZAÇÃO
-// ======================================================
-
-window.addEventListener(
-    "DOMContentLoaded",
-    () => {
-
-
-        // =============================
-        // ATUALIZA PERÍODO DOS DADOS
-        // =============================
-
-        atualizarPrazo();
-
-
-        // =============================
-        // LOG DO DASHBOARD
-        // =============================
-
-        if (
-            typeof logDashboard === "function"
-        ) {
-
-            logDashboard(
-                "Dashboard iniciado"
-            );
-
-        }
-
+function atualizarIndicadorDados(metadados) {
+    const elemento = document.getElementById("fonteDados");
+    if (!elemento) return;
+    if (!dadosDashboard.length) {
+        elemento.textContent = "Nenhum conjunto de dados válido carregado.";
+        return;
     }
-);
+    const momento = metadados.carregadoEm ? new Date(metadados.carregadoEm).toLocaleString("pt-BR") : "sessão atual";
+    elemento.textContent = `Dados: ${metadados.origem || "conjunto persistido"} · carregados em ${momento} · ${resumoDashboard.total} registros · ${resumoDashboard.equipamentos.length} vagões`;
+}
 
+function obterEquipamentos() { return resumoDashboard.resumoVagoes; }
+function obterSistemas() { return resumoDashboard.sistemasExecutados; }
 
-// ======================================================
-// EXPORTAR FUNÇÕES
-// ======================================================
-
-window.atualizarDashboard =
-    atualizarDashboard;
-
-
-window.obterEquipamentos =
-    obterEquipamentos;
-
-
-window.obterSistemas =
-    obterSistemas;
-
-
-window.obterComponentes =
-    obterComponentes;
-
-
-window.obterTarefas =
-    obterTarefas;
+Object.assign(window, { atualizarDashboard, atualizarPrazo, atualizarAnalises, obterEquipamentos, obterSistemas, obterResumoDashboard: () => resumoDashboard });

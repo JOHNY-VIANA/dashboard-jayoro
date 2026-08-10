@@ -1,762 +1,95 @@
-// ======================================================
-// EXCEL.JS
-// DASHBOARD REFORMA ENTRE-SAFRA - FROTA CCT JAYORO
-// ======================================================
-
-
-// Dados globais
-
+// Importação, validação e persistência do último conjunto válido de dados.
 let dadosExcel = [];
+let resumoExcel = gerarResumoDados([]);
+const BANCO_DADOS = "dashboard-jayoro";
+const STORE_DADOS = "conjuntos";
+const CHAVE_ULTIMO_CONJUNTO = "ultimo-valido";
 
-let resumoExcel = {};
+function abrirBanco() {
+    return new Promise((resolve, reject) => {
+        const pedido = indexedDB.open(BANCO_DADOS, 1);
+        pedido.onupgradeneeded = () => pedido.result.createObjectStore(STORE_DADOS);
+        pedido.onsuccess = () => resolve(pedido.result);
+        pedido.onerror = () => reject(pedido.error);
+    });
+}
 
+async function salvarUltimoConjunto(payload) {
+    const banco = await abrirBanco();
+    await new Promise((resolve, reject) => {
+        const transacao = banco.transaction(STORE_DADOS, "readwrite");
+        transacao.objectStore(STORE_DADOS).put(payload, CHAVE_ULTIMO_CONJUNTO);
+        transacao.oncomplete = resolve;
+        transacao.onerror = () => reject(transacao.error);
+    });
+    banco.close();
+}
 
+async function recuperarUltimoConjunto() {
+    const banco = await abrirBanco();
+    const payload = await new Promise((resolve, reject) => {
+        const pedido = banco.transaction(STORE_DADOS, "readonly").objectStore(STORE_DADOS).get(CHAVE_ULTIMO_CONJUNTO);
+        pedido.onsuccess = () => resolve(pedido.result);
+        pedido.onerror = () => reject(pedido.error);
+    });
+    banco.close();
+    return payload;
+}
 
+function validarPlanilha(linhas) {
+    if (!Array.isArray(linhas) || !linhas.length) throw new Error("A planilha está vazia.");
+    const colunas = new Set(Object.keys(linhas[0]).map(normalizarTexto));
+    const possuiEquipamento = ["EQUIPAMENTO", "PREFIXO", "VAGÃO", "VAGAO"].some(coluna => colunas.has(normalizarTexto(coluna)));
+    if (!possuiEquipamento || !colunas.has("SISTEMA")) throw new Error("A planilha deve conter as colunas EQUIPAMENTO (ou PREFIXO/VAGÃO) e SISTEMA.");
+    const normalizados = linhas.map(normalizarRegistro);
+    if (!normalizados.some(linha => linha.equipamentoChave)) throw new Error("Nenhum equipamento válido foi encontrado.");
+    if (normalizados.some(linha => !linha.equipamentoChave)) throw new Error("Há registro(s) sem EQUIPAMENTO/PREFIXO; nenhuma substituição foi realizada.");
+    return normalizados;
+}
 
-// ======================================================
-// CARREGAR EXCEL AUTOMÁTICO
-// data/reforma.xlsx
-// ======================================================
+async function aplicarLinhas(linhas, origem, persistir) {
+    const normalizados = validarPlanilha(linhas);
+    const resumo = gerarResumoDados(normalizados);
+    const integridade = validarIntegridadeDados(normalizados, resumo);
+    if (!integridade.valido) throw new Error(integridade.erros.join(" "));
+    if (persistir) await salvarUltimoConjunto({ dados: normalizados, origem, carregadoEm: new Date().toISOString() });
+    dadosExcel = normalizados;
+    resumoExcel = resumo;
+    window.dadosExcel = dadosExcel;
+    window.resumoExcel = resumoExcel;
+    atualizarDashboard(dadosExcel, resumoExcel, { origem, carregadoEm: new Date().toISOString() });
+}
 
-async function carregarExcelAutomatico(){
+async function importarExcel(evento) {
+    const arquivo = evento.target.files?.[0];
+    if (!arquivo) return;
+    try {
+        const buffer = await arquivo.arrayBuffer();
+        const workbook = XLSX.read(new Uint8Array(buffer), { type: "array" });
+        const linhas = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { defval: "" });
+        await aplicarLinhas(linhas, arquivo.name, true);
+    } catch (erro) {
+        console.error("Importação rejeitada; o último conjunto válido foi preservado.", erro);
+        alert(`Não foi possível importar o arquivo: ${erro.message}\nO último conjunto válido foi mantido.`);
+    } finally {
+        evento.target.value = "";
+    }
+}
 
-
-    try{
-
-
-        console.log(
-            "Carregando reforma.xlsx..."
-        );
-
-
-        const resposta =
-            await fetch(
-                "./data/reforma.xlsx"
-            );  
-
-
-
-        if(!resposta.ok){
-
-
-            throw new Error(
-                "Arquivo reforma.xlsx não encontrado"
-            );
-
-
+async function restaurarUltimoConjunto() {
+    try {
+        const payload = await recuperarUltimoConjunto();
+        if (payload?.dados?.length) {
+            dadosExcel = payload.dados;
+            resumoExcel = gerarResumoDados(dadosExcel);
+            window.dadosExcel = dadosExcel;
+            window.resumoExcel = resumoExcel;
+            atualizarDashboard(dadosExcel, resumoExcel, payload);
         }
-
-
-
-
-        const buffer =
-
-            await resposta.arrayBuffer();
-
-
-
-
-        lerExcel(buffer);
-
-
-
+    } catch (erro) {
+        console.warn("Não foi possível restaurar dados persistidos.", erro);
     }
-
-    catch(error){
-
-
-        console.error(
-            "Erro ao carregar Excel:",
-            error
-        );
-
-
-    }
-
-
 }
 
-
-
-
-
-
-
-// ======================================================
-// IMPORTAR ARQUIVO MANUAL
-// ======================================================
-
-function importarExcel(event){
-
-
-
-    const arquivo =
-
-        event.target.files[0];
-
-
-
-    if(!arquivo){
-
-
-        console.warn(
-            "Nenhum arquivo selecionado."
-        );
-
-
-        return;
-
-
-    }
-
-
-
-
-
-    const leitor =
-
-        new FileReader();
-
-
-
-
-
-    leitor.onload = function(e){
-
-
-        lerExcel(
-            e.target.result
-        );
-
-
-    };
-
-
-
-
-    leitor.readAsArrayBuffer(
-        arquivo
-    );
-
-
-}
-
-
-
-
-
-
-
-
-// ======================================================
-// LER EXCEL
-// ======================================================
-
-
-function lerExcel(buffer){
-
-
-
-    const dados =
-
-        new Uint8Array(
-            buffer
-        );
-
-
-
-
-
-    const workbook =
-
-        XLSX.read(
-            dados,
-            {
-                type:"array"
-            }
-        );
-
-
-
-
-
-    const primeiraAba =
-
-        workbook.SheetNames[0];
-
-
-
-
-
-    const planilha =
-
-        workbook.Sheets[
-            primeiraAba
-        ];
-
-
-
-
-
-    dadosExcel =
-
-        XLSX.utils.sheet_to_json(
-            planilha,
-            {
-                defval:""
-            }
-        );
-
-
-
-
-
-    console.log(
-        "Excel carregado:",
-        dadosExcel
-    );
-
-
-
-
-
-    processarDadosExcel();
-
-
-}
-
-
-
-
-
-
-
-
-
-// ======================================================
-// TRATAMENTO DOS DADOS
-// ======================================================
-
-
-function processarDadosExcel(){
-
-
-
-    if(!dadosExcel.length){
-
-
-        console.warn(
-            "Planilha vazia."
-        );
-
-
-        return;
-
-
-    }
-
-
-
-
-
-    dadosExcel =
-
-        dadosExcel.map(item => {
-
-
-
-            return {
-
-
-                ...item,
-
-
-
-                // ==========================
-                // EQUIPAMENTO
-                // ==========================
-
-                equipamento:
-
-
-                    item.EQUIPAMENTO ||
-
-                    item.Equipamento ||
-
-                    item.equipamento ||
-
-                    "Não informado",
-
-
-
-
-
-                // ==========================
-                // Nº O.S
-                // ==========================
-
-                os:
-
-
-                    item["Nº O.S"] ||
-
-                    item["N° O.S"] ||
-
-                    item.OS ||
-
-                    item.Ordem ||
-
-                    "",
-
-
-
-
-
-                // ==========================
-                // DATA
-                // ==========================
-
-                data:
-
-
-                    item.DATA ||
-
-                    item.Data ||
-
-                    "",
-
-
-
-
-
-                // ==========================
-                // TAREFA
-                // ==========================
-
-                tarefa:
-
-
-                    item.TAREFA ||
-
-                    item.Tarefa ||
-
-                    "",
-
-
-
-
-
-                // ==========================
-                // DESTINO
-                // ==========================
-
-                destino:
-
-
-                    item.DESTINO ||
-
-                    item.Destino ||
-
-                    "",
-
-
-
-
-
-                // ==========================
-                // SISTEMA
-                // ==========================
-
-                sistema:
-
-
-                    item.SISTEMA ||
-
-                    item.Sistema ||
-
-                    "Não informado",
-
-
-
-
-
-                // ==========================
-                // COMPONENTE
-                // ==========================
-
-                componente:
-
-
-                    item.COMPONENTE ||
-
-                    item.Componente ||
-
-                    ""
-
-
-
-            };
-
-
-        });
-
-
-
-
-
-    gerarResumoExcel();
-
-
-
-}
-
-
-
-
-
-
-
-
-
-// ======================================================
-// GERAR INDICADORES
-// ======================================================
-
-
-function gerarResumoExcel(){
-
-
-
-    resumoExcel = {
-
-
-
-        // Total de registros
-
-        total:
-
-            dadosExcel.length,
-
-
-
-
-
-
-        // Equipamentos únicos
-
-        equipamentos:
-
-
-            [
-
-                ...new Set(
-
-                    dadosExcel.map(
-
-                        item =>
-                        item.equipamento
-
-                    )
-
-                )
-
-            ],
-
-
-
-
-
-
-
-        // Sistemas únicos
-
-        sistemas:
-
-
-            [
-
-                ...new Set(
-
-                    dadosExcel.map(
-
-                        item =>
-                        item.sistema
-
-                    )
-
-                )
-
-            ],
-
-
-
-
-
-
-        // Componentes únicos
-
-        componentes:
-
-
-            [
-
-                ...new Set(
-
-                    dadosExcel.map(
-
-                        item =>
-                        item.componente
-
-                    )
-
-                )
-
-            ],
-
-
-
-
-
-
-        // Total de OS
-
-        ordensServico:
-
-
-            dadosExcel.filter(
-
-                item =>
-
-                item.os !== ""
-
-            ).length,
-
-
-
-
-
-
-
-        // Tarefas
-
-        tarefas:
-
-
-            [
-
-                ...new Set(
-
-                    dadosExcel.map(
-
-                        item =>
-                        item.tarefa
-
-                    )
-
-                )
-
-            ]
-
-
-
-    };
-
-
-
-
-
-
-
-    console.log(
-
-        "Resumo gerado:",
-
-        resumoExcel
-
-    );
-
-
-
-
-
-
-
-
-    if(
-
-        typeof atualizarDashboard === "function"
-
-    ){
-
-
-
-        atualizarDashboard(
-
-            dadosExcel,
-
-            resumoExcel
-
-        );
-
-
-    }
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
-// ======================================================
-// EXPORTAR EXCEL
-// ======================================================
-
-
-function exportarExcel(){
-
-
-
-    if(!dadosExcel.length){
-
-
-
-        alert(
-
-            "Nenhum dado para exportar."
-
-        );
-
-
-
-        return;
-
-
-    }
-
-
-
-
-
-
-    const planilha =
-
-
-        XLSX.utils.json_to_sheet(
-
-            dadosExcel
-
-        );
-
-
-
-
-
-
-
-    const arquivo =
-
-
-        XLSX.utils.book_new();
-
-
-
-
-
-
-
-    XLSX.utils.book_append_sheet(
-
-        arquivo,
-
-        planilha,
-
-        "Reforma"
-
-    );
-
-
-
-
-
-
-
-    XLSX.writeFile(
-
-        arquivo,
-
-        "Relatorio_Jayoro.xlsx"
-
-    );
-
-
-
-}
-
-
-
-
-
-
-
-
-
-// ======================================================
-// INICIALIZAÇÃO
-// ======================================================
-
-
-window.addEventListener(
-
-    "DOMContentLoaded",
-
-    ()=>{
-
-
-        carregarExcelAutomatico();
-
-
-    }
-
-);
-
-
-
-
-
-
-
-
-
-// ======================================================
-// EXPORTAR
-// ======================================================
-
-
-window.importarExcel =
-
-    importarExcel;
-
-
-
-window.exportarExcel =
-
-    exportarExcel;
-
-
-
-window.dadosExcel =
-
-    dadosExcel;
-
-
-
-window.resumoExcel =
-
-    resumoExcel;
+window.addEventListener("DOMContentLoaded", restaurarUltimoConjunto);
+Object.assign(window, { importarExcel, dadosExcel, resumoExcel, restaurarUltimoConjunto });

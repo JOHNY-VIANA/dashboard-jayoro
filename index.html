@@ -1,476 +1,469 @@
-<!-- ==================================================
-     DASHBOARD REFORMA ENTRE-SAFRA
-     FROTA CCT • PCM JAYORO
-================================================== -->
-
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="pt-BR">
-
 <head>
-
-    <!-- ==================================================
-         CONFIGURAÇÕES
-    ================================================== -->
-
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>
-        Dashboard Reforma Entre-Safra | Frota CCT
-    </title>
-
-
-    <!-- ==================================================
-         GOOGLE FONTS
-    ================================================== -->
-
-    <link
-        rel="preconnect"
-        href="https://fonts.googleapis.com"
-    >
-
-    <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossorigin
-    >
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
-
-
-    <!-- ==================================================
-         FONT AWESOME
-    ================================================== -->
-
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
-    >
-
-
-    <!-- ==================================================
-         CSS
-    ================================================== -->
-
-    <link
-        rel="stylesheet"
-        href="css/style.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="css/dashboard.css"
-    >
-
-
-    <!-- ==================================================
-         CHART.JS
-    ================================================== -->
-
-    <script
-        src="https://cdn.jsdelivr.net/npm/chart.js"
-    ></script>
-
-
-    <!-- ==================================================
-         SHEETJS / XLSX
-         
-         Importação de Excel e CSV
-    ================================================== -->
-
-    <script
-        src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"
-    ></script>
-
-</head>
-
-
-<body>
-
-
-    <!-- ==================================================
-         HEADER
-    ================================================== -->
-
-    <header class="topbar">
-
-
-        <!-- ==================================================
-             LOGO + TÍTULO
-        ================================================== -->
-
-        <div class="logo">
-
-
-            <img
-                src="img/logo.jpg"
-                alt="Jayoro"
-                class="logo-jayoro"
-            >
-
-
-            <div>
-
-                <h1>
-                    Dashboard Reforma Entre-Safra
-                </h1>
-
-                <span>
-                    Frota CCT • PCM
-                </span>
-
-            </div>
-
-
-        </div>
-
-
-
-        <!-- ==================================================
-             AÇÕES DO HEADER
-        ================================================== -->
-
-        <div class="header-actions">
-
-
-            <!-- ==================================================
-                 IMPORTAR EXCEL
-            ================================================== -->
-
-            <label class="btn-import">
-
-
-                <i class="fa-solid fa-file-excel"></i>
-
-
-                Importar Excel
-
-
-                <input
-                    type="file"
-                    id="arquivoExcel"
-                    accept=".xlsx,.xls,.csv"
-                    hidden
-                >
-
-
-            </label>
-
-
-
-            <!-- ==================================================
-                 PERÍODO DOS DADOS
-            ================================================== -->
-
-            <div class="prazo">
-
-
-                <span>
-                    Período dos Dados
-                </span>
-
-
-                <h2>
-                    01/11/2025 — 08/08/2026
-                </h2>
-
-
-                <small>
-                    Formulário: CS-5839
-                </small>
-
-
-            </div>
-
-
-        </div>
-
-
-    </header>
-
-
-
-    <!-- ==================================================
-         CONTEÚDO PRINCIPAL
-    ================================================== -->
-
-    <main>
-
-
-        <!-- ==================================================
-             KPIs
-        ================================================== -->
-
-        <section class="kpis">
-
-
-            <!-- ==================================================
-                 EQUIPAMENTOS
-            ================================================== -->
-
-            <div class="card">
-
-
-                <i class="fa-solid fa-truck"></i>
-
-
-                <h3>
-                    Equipamentos
-                </h3>
-
-
-                <h1 id="kpiVagoes">
-                    0
-                </h1>
-
-
-            </div>
-
-
-
-            <!-- ==================================================
-                 SISTEMAS
-            ================================================== -->
-
-            <div class="card">
-
-
-                <i class="fa-solid fa-gears"></i>
-
-
-                <h3>
-                    Sistemas Executados
-                </h3>
-
-
-                <h1 id="kpiSistemas">
-                    0
-                </h1>
-
-
-            </div>
-
-
-
-            <!-- ==================================================
-                 ORDENS DE SERVIÇO
-            ================================================== -->
-
-            <div class="card">
-
-
-                <i class="fa-solid fa-file-circle-check"></i>
-
-
-                <h3>
-                    Ordens de Serviço
-                    <br>
-                    (Analisadas da Família 37)
-                </h3>
-
-
-                <h1 id="kpiOS">
-                    0
-                </h1>
-
-
-            </div>
-
-
-
-            <!-- ==================================================
-                 PERÍODO ANALISADO
-            ================================================== -->
-
-            <div class="card">
-
-
-                <i class="fa-solid fa-calendar-days"></i>
-
-
-                <h3>
-                    Período Analisado
-                </h3>
-
-
-                <h1 id="kpiPrazo">
-                    0
-                </h1>
-
-
-                <span>
-                    dias
-                </span>
-
-
-            </div>
-
-
-        </section>
-
-
-
-        <!-- ==================================================
-             PRIMEIRA LINHA DE GRÁFICOS
-        ================================================== -->
-
 <!-- ==================================================
-     SISTEMAS MAIS EXECUTADOS
+     CONFIGURAÇÕES
 ================================================== -->
 
-<section class="grid-1">
+<meta charset="UTF-8">
 
-    <div class="panel">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-        <div class="panel-title">
+<title>
+    Dashboard Reforma Entre-Safra | Frota CCT
+</title>
 
-            <i class="fa-solid fa-chart-column"></i>
 
-            Sistemas mais executados
+<!-- ==================================================
+     GOOGLE FONTS
+================================================== -->
+
+<link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+>
+
+<link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+    crossorigin
+>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+>
+
+
+<!-- ==================================================
+     FONT AWESOME
+================================================== -->
+
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+>
+
+
+<!-- ==================================================
+     CSS
+================================================== -->
+
+<link
+    rel="stylesheet"
+    href="css/style.css"
+>
+
+<link
+    rel="stylesheet"
+    href="css/dashboard.css"
+>
+
+
+<!-- ==================================================
+     CHART.JS
+================================================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/chart.js"
+></script>
+
+
+<!-- ==================================================
+     CHART.JS DATALABELS
+================================================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"
+></script>
+
+
+<!-- ==================================================
+     SHEETJS / XLSX
+     
+     Importação de Excel e CSV
+================================================== -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"
+></script>
+
+
+
+ </head>
+<body>
+<!-- ==================================================
+     HEADER
+================================================== -->
+
+<header class="topbar">
+
+
+    <!-- ==================================================
+         LOGO + TÍTULO
+    ================================================== -->
+
+    <div class="logo">
+
+
+        <img
+            src="img/logo.jpg"
+            alt="Jayoro"
+            class="logo-jayoro"
+        >
+
+
+        <div>
+
+            <h1>
+                Dashboard Reforma Entre-Safra
+            </h1>
+
+            <span>
+                Frota CCT • PCM
+            </span>
 
         </div>
 
-        <canvas
-            id="graficoSistemas"
-        ></canvas>
 
     </div>
 
-</section>
+
+
+    <!-- ==================================================
+         AÇÕES DO HEADER
+    ================================================== -->
+
+    <div class="header-actions">
 
 
         <!-- ==================================================
-             MATRIZ EQUIPAMENTO × SISTEMA
+             IMPORTAR EXCEL
         ================================================== -->
 
-        <section class="grid-1">
+        <label class="btn-import">
 
 
-            <div class="panel">
+            <i class="fa-solid fa-file-excel"></i>
 
 
-                <div class="panel-title">
+            Importar Excel
 
 
-                    <i class="fa-solid fa-table-cells-large"></i>
+            <input
+                type="file"
+                id="arquivoExcel"
+                accept=".xlsx,.xls,.csv"
+                hidden
+            >
 
 
-                    Matriz Equipamento × Sistema
+        </label>
+
+        <!-- ==================================================
+             PERÍODO DOS DADOS
+        ================================================== -->
+
+        <div class="prazo">
 
 
-                </div>
+            <span>
+                Período dos Dados
+            </span>
 
 
-                <canvas
-                    id="graficoMatriz"
-                ></canvas>
+            <h2 id="periodoDados">
+                01/11/2025 — 10/08/2026
+            </h2>
+
+
+            <small>
+                Formulário: CS-5839
+            </small>
+
+
+        </div>
+
+
+    </div>
+
+
+</header>
+
+
+
+<!-- ==================================================
+     CONTEÚDO PRINCIPAL
+================================================== -->
+
+<main>
+
+
+    <!-- ==================================================
+         KPIs
+    ================================================== -->
+
+    <section class="kpis">
+
+
+        <!-- ==================================================
+             EQUIPAMENTOS
+        ================================================== -->
+
+        <div class="card">
+
+
+            <i class="fa-solid fa-truck"></i>
+
+
+            <h3>
+                Equipamentos
+            </h3>
+
+
+            <h1 id="kpiVagoes">
+                0
+            </h1>
+
+
+        </div>
+
+
+
+        <!-- ==================================================
+             SISTEMAS
+        ================================================== -->
+
+        <div class="card">
+
+
+            <i class="fa-solid fa-gears"></i>
+
+
+            <h3>
+                Sistemas obrigatórios apontados
+            </h3>
+
+
+            <h1 id="kpiSistemas">
+                0
+            </h1>
+
+
+        </div>
+
+
+
+        <!-- ==================================================
+             PERÍODO ANALISADO
+        ================================================== -->
+
+        <div class="card">
+
+
+            <i class="fa-solid fa-calendar-days"></i>
+
+
+            <h3>
+                Período Analisado
+            </h3>
+
+
+            <h1 id="kpiPrazo">
+                0
+            </h1>
+
+
+            <span>
+                dias
+            </span>
+
+
+        </div>
+
+        <div class="card"><i class="fa-solid fa-triangle-exclamation"></i><h3>Críticos</h3><h1 id="kpiCriticos">0</h1></div>
+        <div class="card"><i class="fa-solid fa-ban"></i><h3>Sem apontamento</h3><h1 id="kpiSemApontamento">0</h1></div>
+
+    </section>
+
+    <p id="fonteDados" class="fonte-dados" aria-live="polite">
+        Nenhum conjunto de dados válido carregado.
+    </p>
+
+    <!-- ==================================================
+          GRÁFICO 1
+         
+         SISTEMAS MAIS EXECUTADOS
+    ================================================== -->
+
+    <section class="grid-1">
+
+
+        <div class="panel">
+
+
+            <div class="panel-title">
+
+
+                <i class="fa-solid fa-chart-column"></i>
+
+
+                Sistemas mais executados
 
 
             </div>
 
 
-        </section>
+            <canvas
+                id="graficoSistemas"
+            ></canvas>
+            <p id="analiseSistemas" class="analise-grafico"></p>
+
+
+        </div>
+
+
+    </section>
 
 
 
-        <!-- ==================================================
-             APONTAMENTOS × MÉDIA
-        ================================================== -->
+    <!-- ==================================================
+         GRÁFICO 2
+         
+         MATRIZ EQUIPAMENTO × SISTEMA
+    ================================================== -->
 
-        <section class="grid-1">
-
-
-            <div class="panel">
-
-
-                <div class="panel-title">
+    <section class="grid-1 matriz-destaque">
 
 
-                    <i class="fa-solid fa-chart-line"></i>
+        <div class="panel">
 
 
-                    Apontamentos × Média
+            <div class="panel-title">
 
 
-                </div>
+                <i class="fa-solid fa-table-cells-large"></i>
 
 
-                <canvas
-                    id="graficoEvolucao"
-                ></canvas>
+                Matriz Equipamento × Sistema
 
 
             </div>
 
 
-        </section>
+            <div id="filtrosMatriz" class="filtros-matriz" aria-label="Filtrar sistemas da matriz"></div>
+            <p id="estadoFiltroMatriz" class="estado-filtro" aria-live="polite">Exibindo todos os sistemas obrigatórios.</p>
+            <div id="graficoMatriz" class="matriz-container" aria-label="Matriz de sistemas obrigatórios por equipamento"></div>
+            <p class="legenda-matriz"><span class="legenda-apontado"></span>Cor do sistema: apontado <span class="legenda-pendente"></span>Cinza: pendente</p>
+            <section id="resumoPendencias" class="resumo-pendencias" aria-live="polite"></section>
 
 
-    </main>
+        </div>
 
 
-
-    <!-- ==================================================
-         RODAPÉ
-    ================================================== -->
-
-    <footer>
-
-
-        Dashboard desenvolvido para acompanhamento da
-        Reforma Entre-Safra • PCMA Jayoro
-
-
-    </footer>
+    </section>
 
 
 
     <!-- ==================================================
-         JAVASCRIPT
+         GRÁFICO 3
          
-         ORDEM IMPORTANTE:
+         PERCENTUAL DE SISTEMAS APONTADOS
          
-         1. utils.js
-         2. excel.js
-         3. charts.js
-         4. dashboard.js
-         5. app.js
+         MOSTRA:
+         
+         • Percentual executado
+         • Percentual faltante
+         • Sistemas ainda não apontados
     ================================================== -->
 
-
-    <script
-        src="js/utils.js"
-    ></script>
+    <section class="grid-1">
 
 
-    <script
-        src="js/excel.js"
-    ></script>
+        <div class="panel">
 
 
-    <script
-        src="js/charts.js"
-    ></script>
+            <div class="panel-title">
 
 
-    <script
-        src="js/dashboard.js"
-    ></script>
+                <i class="fa-solid fa-chart-pie"></i>
 
 
-    <script
-        src="js/app.js"
-    ></script>
+                Percentual de Sistemas Apontados por Equipamento
 
 
+            </div>
+
+
+            <div class="grafico-equipamentos-container">
+                <canvas id="graficoPercentualSistemas"></canvas>
+            </div>
+            <p id="analisePercentual" class="analise-grafico"></p>
+
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+
+<!-- ==================================================
+     RODAPÉ
+================================================== -->
+
+<footer>
+
+
+    Dashboard desenvolvido para acompanhamento da
+    Reforma Entre-Safra • PCMA Jayoro
+
+
+</footer>
+
+
+
+<!-- ==================================================
+     JAVASCRIPT
+     
+     ORDEM IMPORTANTE:
+     
+     1. utils.js
+     2. excel.js
+     3. charts.js
+     4. dashboard.js
+     5. app.js
+================================================== -->
+
+
+<script
+    src="js/utils.js"
+></script>
+
+
+<script
+    src="js/excel.js"
+></script>
+
+
+<script
+    src="js/charts.js"
+></script>
+
+
+<script
+    src="js/dashboard.js"
+></script>
+
+
+<script
+    src="js/app.js"
+></script>
 </body>
-
 </html>
