@@ -21,11 +21,10 @@ function atualizarKPIs() {
     atualizarPrazo();
 }
 
-function atualizarPrazo() {
-    const dias = 284;
-    atualizarTexto("kpiPrazo", dias);
-    const elemento = document.getElementById("periodoDados");
-    if (elemento) elemento.textContent = PERIODO_PROJETO;
+function obterDataAtual() {
+    const agora = new Date();
+
+    return agora.toLocaleDateString("pt-BR");
 }
 
 function atualizarAnalises() {
