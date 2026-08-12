@@ -18,7 +18,12 @@ function atualizarKPIs() {
     atualizarTexto("kpiSistemas", `${resumoDashboard.sistemas.length}/${SISTEMAS_OBRIGATORIOS.length}`);
     atualizarTexto("kpiCriticos", resumoDashboard.criticos);
     atualizarTexto("kpiSemApontamento", resumoDashboard.semApontamento);
-    atualizarPrazo();
+    function atualizarPrazo() {
+    const dias = 283;
+    atualizarTexto("kpiPrazo", dias);
+    const elemento = document.getElementById("periodoDados");
+    if (elemento) elemento.textContent = PERIODO_PROJETO;
+}
 }
 
 function obterDataAtual() {
