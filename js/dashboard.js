@@ -22,7 +22,7 @@ function atualizarKPIs() {
 }
 
 function atualizarPrazo() {
-    const dias = 283;
+    const dias = 284;
     atualizarTexto("kpiPrazo", dias);
     const elemento = document.getElementById("periodoDados");
     if (elemento) elemento.textContent = PERIODO_PROJETO;
